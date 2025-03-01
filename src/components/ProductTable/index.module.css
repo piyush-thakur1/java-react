@@ -1,0 +1,62 @@
+.root {
+  position: relative;
+}
+.container {
+  width: 100%;
+  max-width: 800px;
+  margin: 20px auto;
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+}
+
+.table th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+.icon {
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.icon:hover {
+  transform: scale(1.2);
+  color: #007bff;
+}
+
+.noData {
+  text-align: center !important;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: flex-end;
+  padding-bottom: 20px;
+}
+
+.addButton {
+  padding: 8px;
+  border-radius: 7px;
+  border: 1px solid #979393;
+}
