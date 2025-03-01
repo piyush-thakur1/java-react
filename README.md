@@ -9,8 +9,8 @@ Follow these steps to set up the project:
 1. Clone the repository:
 
    ```sh
-   git clone *https://github.com/piyush-thakur1/java-react.git*
-   cd *java-react*
+   git clone https://github.com/piyush-thakur1/java-react.git
+   cd java-react
    ```
 
 2. Install dependencies:
@@ -19,7 +19,7 @@ Follow these steps to set up the project:
    npm install
    ```
 
-3. Create a `.env` file in the root directory and add the backend API URL:
+3. Create a `.env` file in the root directory and add the backend API URL
 
    ```sh
    VITE_APP_API_URL=<your-backend-api-url>
