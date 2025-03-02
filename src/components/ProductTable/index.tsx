@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import styles from "./index.module.css";
@@ -21,26 +21,30 @@ const ProductTable: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await axios.get<Product[]>(
-          `${import.meta.env.VITE_API_URL}getProductS1`
-        );
-        setProducts(response.data);
-      } catch (error) {
-        toast.error("Error fetching products.");
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchProducts();
   }, []);
+
+  const fetchProducts = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get<Product[]>(
+        `${import.meta.env.VITE_API_URL}getProductS1`
+      );
+      setProducts(response.data);
+    } catch (error) {
+      toast.error("Error fetching products.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleEdit = (pid: number) => {
     navigate(`/edit-product/${pid}`);
   };
 
   const handleDelete = async () => {
+    if (!deleteId) return;
+
     try {
       await axios.delete(
         `${import.meta.env.VITE_API_URL}deleteProdS1/${deleteId}`
@@ -53,6 +57,7 @@ const ProductTable: React.FC = () => {
       toast.error("Error deleting product.");
     } finally {
       setShowDeleteModel(false);
+      setDeleteId(null);
     }
   };
 
@@ -66,68 +71,104 @@ const ProductTable: React.FC = () => {
     setDeleteId(null);
   };
 
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    }).format(price);
+  };
+
+  const selectedProduct = products.find((p) => p.pid === deleteId);
+
   return (
     <div className={styles.root}>
       <div className={styles.container}>
         <div className={styles.header}>
-          <h2>Product List</h2>
-          <div className={styles.buttonContainer}>
+          <h2>Product Management</h2>
           <button
             onClick={() => navigate("/create-product")}
             className={styles.addButton}
           >
-            Add Product
+            <FaPlus className={styles.buttonIcon} />
+            <span>Add Product</span>
           </button>
-            </div>
-        
         </div>
 
         {loading ? (
-          <div className={styles.loader}>Loading...</div>
+          <div className={styles.loaderContainer}>
+            <div className={styles.spinner}></div>
+            <p>Loading products...</p>
+          </div>
         ) : (
-          <table className={styles.table}>
-            <thead>
-              <tr>
-                <th>Sr. No</th>
-                <th>Product Name</th>
-                <th>Subscription</th>
-                <th>Price</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {products.length > 0 ? (
-                products.map((product, index) => (
-                  <tr key={product.pid}>
-                    <td>{index + 1}</td>
-                    <td>{product.pname}</td>
-                    <td>{product.subscription}</td>
-                    <td>{product.price}</td>
-                    <td className={styles.actions}>
-                      <FaEdit
-                        className={styles.icon}
-                        onClick={() => handleEdit(product.pid)}
-                      />
-                      <FaTrash
-                        className={styles.icon}
-                        onClick={() => handleDeleteConfirmation(product.pid)}
-                      />
+          <div className={styles.tableWrapper}>
+            <table className={styles.table}>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Product Name</th>
+                  <th>Subscription</th>
+                  <th>Price</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {products.length > 0 ? (
+                  products.map((product, index) => (
+                    <tr key={product.pid} className={styles.tableRow}>
+                      <td>{index + 1}</td>
+                      <td className={styles.productName}>{product.pname}</td>
+                      <td>
+                        <span className={styles.subscriptionBadge}>
+                          {product.subscription}
+                        </span>
+                      </td>
+                      <td className={styles.price}>
+                        {formatPrice(product.price)}
+                      </td>
+                      <td className={styles.actions}>
+                        <button
+                          className={styles.editButton}
+                          onClick={() => handleEdit(product.pid)}
+                        >
+                          <FaEdit className={styles.editIcon} />
+                          <span>Edit</span>
+                        </button>
+                        <button
+                          className={styles.deleteButton}
+                          onClick={() => handleDeleteConfirmation(product.pid)}
+                        >
+                          <FaTrash className={styles.deleteIcon} />
+                          <span>Delete</span>
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={5} className={styles.noData}>
+                      <div className={styles.emptyState}>
+                        <p>No products found</p>
+                        <button
+                          onClick={() => navigate("/create-product")}
+                          className={styles.emptyStateButton}
+                        >
+                          Add your first product
+                        </button>
+                      </div>
                     </td>
                   </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={5} className={styles.noData}>
-                    No products found
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+                )}
+              </tbody>
+            </table>
+          </div>
         )}
 
         {showDeleteModel && (
-          <DeleteConfirmModel onCancel={handleCancel} onDelete={handleDelete} />
+          <DeleteConfirmModel
+            onCancel={handleCancel}
+            onDelete={handleDelete}
+            productName={selectedProduct?.pname}
+          />
         )}
       </div>
     </div>

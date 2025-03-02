@@ -2,82 +2,92 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5); 
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
     z-index: 1000;
-    opacity: 0;
-    animation: fadeIn 0.3s forwards;
-}
-
-.modal {
-    background: white;
-    width: 90%;
+    animation: fadeIn 0.2s ease-out;
+  }
+  
+  .modal {
+    background-color: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    width: 100%;
     max-width: 400px;
-    padding: 20px;
-    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
     text-align: center;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    transform: scale(0.8);
-    animation: scaleIn 0.3s forwards;
-}
-
-.modal h3 {
-    font-size: 18px;
-    margin-bottom: 15px;
-}
-
-.modalActions {
+    animation: slideIn 0.3s ease-out;
+  }
+  
+  .modalIcon {
+    font-size: 2.5rem;
+    color: #f59f00;
+    margin-bottom: 1rem;
+  }
+  
+  .modal h3 {
+    margin: 0 0 0.75rem 0;
+    font-size: 1.25rem;
+    color: #343a40;
+  }
+  
+  .modalMessage {
+    margin: 0 0 0.5rem 0;
+    color: #495057;
+  }
+  
+  .modalWarning {
+    color: #e74c3c;
+    font-size: 0.875rem;
+    margin-bottom: 1.25rem;
+  }
+  
+  .modalActions {
     display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-}
-
-.confirmButton,
-.cancelButton {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: all 0.2s ease-in-out;
-}
-
-.confirmButton {
-    background: #ff4d4d;
+    justify-content: space-around;
+    gap: 1rem;
+  }
+  
+  .confirmButton {
+    padding: 0.5rem 1rem;
+    background-color: #e74c3c;
     color: white;
-}
-
-.confirmButton:hover {
-    background: #e60000;
-}
-
-.cancelButton {
-    background: #ccc;
-    color: black;
-}
-
-.cancelButton:hover {
-    background: #bbb;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-@keyframes scaleIn {
-    from {
-        transform: scale(0.8);
-    }
-    to {
-        transform: scale(1);
-    }
-}
+    border: none;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .confirmButton:hover {
+    background-color: #c0392b;
+  }
+  
+  .cancelButton {
+    padding: 0.5rem 1rem;
+    background-color: #e9ecef;
+    color: #495057;
+    border: none;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .cancelButton:hover {
+    background-color: #dee2e6;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @keyframes slideIn {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
